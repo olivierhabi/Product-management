@@ -20,7 +20,6 @@ class ProductService {
   }
   static async updateProduct(data, next) {
     const { name, description, id } = data;
-    console.log(name, description, id);
     try {
       return await database.Product.update(
         {
@@ -29,6 +28,18 @@ class ProductService {
         },
         { where: { id: id }, returning: true }
       );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteProduct(id, next) {
+    try {
+      return await database.Product.destroy({
+        where: {
+          id: id,
+        },
+      });
     } catch (error) {
       throw error;
     }
