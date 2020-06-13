@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import "@babel/polyfill";
+import nodemailer from "nodemailer";
 import token from "../helpers/genToken";
 import UserService from "../services/UserService";
 import hashPassword from "../helpers/hashPassword";
@@ -15,10 +16,43 @@ class UserController {
     const { email, password } = req.body;
     const hashedPassword = await hashPassword(password);
 
+    var transport = nodemailer.createTransport({
+      host: "smtp.sendgrid.net",
+      port: 25,
+      auth: {
+        user: "apikey",
+        pass:
+          "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",
+      },
+    });
+
+    var mailOptions = {
+      from: '"Product Management" <noreply@prod-man.com>',
+      to: email,
+      subject: "Your Account Information ",
+      text: "Conglaturation to join our Product Management",
+      html: `<h1>Product Management</h1>
+      <p>Your Account info for: ${email}</p>
+      <p>email: ${email}</p>
+      <p>Password${password}</p>`,
+    };
+
     try {
       const createUser = await UserService.addUser({
         email,
         password: hashedPassword,
+      }).then((data) => {
+        transport.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+            return error;
+          } else {
+            console.log("Email sent: " + info.response);
+
+            return;
+          }
+        });
+        return data;
       });
 
       return res.status(201).send({
