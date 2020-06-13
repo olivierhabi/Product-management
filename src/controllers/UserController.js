@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import "@babel/polyfill";
 import token from "../helpers/genToken";
 import UserService from "../services/UserService";
-import genToken from "../helpers/genToken";
 import hashPassword from "../helpers/hashPassword";
 
 class UserController {

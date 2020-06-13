@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import CreateAdmin from "./controllers/AdminController";
 import userRoutes from "./routes/UserRoutes";
+import ProductRoutes from "./routes/ProductRoutes";
 
 import models from "./models";
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 //Product Management (API)
 app.use("/api/user", userRoutes);
+app.use("/api/product", ProductRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).send({
