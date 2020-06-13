@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import CreateAdmin from "./controllers/AdminController";
+import userRoutes from "./routes/UserRoutes";
 
 import models from "./models";
 
@@ -15,7 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-//Product Manager (API)
+//Product Management (API)
+app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).send({
